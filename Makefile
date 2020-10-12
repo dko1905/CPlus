@@ -4,10 +4,10 @@ include config.mk
 
 OBJECTS = main.o
 
-all: options program
+all: options <program>
 
 options:
-	@echo \"Program\" build options:
+	@echo <Program> build options:
 	@echo "CFLAGS  = $(MYCFLAGS)"
 	@echo "LDFLAGS = $(MYLDFLAGS)"
 	@echo "CC      = $(CC)"
@@ -15,10 +15,19 @@ options:
 .c.o:
 	$(CC) $(MYCFLAGS) -c $<
 
-program: $(OBJECTS)
-	$(CC) $(OBJECTS) -o program $(MYLDFLAGS)
+<program>: $(OBJECTS)
+	$(CC) $(OBJECTS) -o <program> $(MYLDFLAGS)
 
+# Remove binary and object files
 clean:
-	rm -f program *.o
+	rm -f <program> $(OBJECTS)
 
-.PHONY: all options clean
+# Install program
+install: all
+	mkdir -p $(DESTDIR)$(PREFIX)/bin
+	cp -f <program> $(DESTDIR)$(PREFIX)/bin
+	chmod +x $(DESTDIR)$(PREFIX)/bin/st
+uninstall:
+	rm -f $(DESTDIR)$(PREFIX)/bin/<program>
+
+.PHONY: all options clean install uninstall
