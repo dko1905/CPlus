@@ -26,7 +26,7 @@ clean:
 install: all
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
 	cp -f <program> $(DESTDIR)$(PREFIX)/bin
-	chmod +x $(DESTDIR)$(PREFIX)/bin/st
+	chmod +x $(DESTDIR)$(PREFIX)/bin/<program>
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/<program>
 
