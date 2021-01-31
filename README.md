@@ -19,7 +19,7 @@ When applying this template, remember to change program name in `Makefile` and `
   <span property="dct:title">c_template</span>.
 This work is published from:
 <span property="vcard:Country" datatype="dct:ISO3166"
-      content="DK" about="190405.xyz">
+      content="DK" about="https://190405.xyz/">
   Denmark</span>.
 </p>
 
