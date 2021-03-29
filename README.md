@@ -1,10 +1,10 @@
 # C Template
 Here is a simple template for every C project. This template is based on suckless' `Makefile`, and file structure.
 
-# Todo
+## Todo
 When applying this template, remember to change program name in `Makefile` and `.gitignore`.
 
-# License
+## License
 <p xmlns:dct="http://purl.org/dc/terms/" xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#">
   <a rel="license"
      href="http://creativecommons.org/publicdomain/zero/1.0/">
