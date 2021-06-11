@@ -2,7 +2,7 @@
 
 include config.mk
 
-OBJECTS = main.o
+OBJECTS = main.o read_block.o die.o
 
 all: options cppp
 
