@@ -1,0 +1,24 @@
+#ifndef CAT_H
+#define CAT_H
+#include <stdbool.h>
+
+// This is the namespace that the class will be under.
+@namespace test.animals
+
+// Create a class, which is a struct in disguise.
+@class Cat {
+	// Define a property in class.
+	int msg;
+
+	// Define function in class.
+	@fn int meow(@ns Cat *self);
+
+	// Setup error handling
+	bool valid;
+};
+
+// Constructor and destructor declarations for the specified class.
+@init Cat (int msg)
+@free Cat
+
+#endif /* CAT_H */
