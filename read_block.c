@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <wchar.h>
 
 #include "read_block.h"
 #include "die.h"
@@ -57,6 +58,50 @@ size_t read_block(char **restrict s, size_t *restrict capp, FILE *restrict strea
 	*capp = cap;
 
 	if (c == EOF) return (size_t)-1;
+
+	return len;
+}
+
+size_t read_block_wcs(wchar_t **restrict wcs, size_t *restrict capp, FILE *restrict stream) {
+	size_t freep = 0, cap = *capp, len = 0;
+	wint_t c = 0;
+
+	/* Setup wcs buffer. */
+	if (*wcs == NULL || cap < 1) {
+		cap = BUFFER_START_SIZE * sizeof(wchar_t);
+		*wcs = malloc(cap);
+		if (*wcs == NULL)
+			die("Failed to allocate memory for wcs", 2);
+	}
+
+	/* Skip all spaces. */
+	while ((c = fgetwc(stream)) != WEOF) {
+		if (is_allowed_char(c)) break;
+	}
+
+	/* Read charectores into string. */
+	while (c != WEOF) {
+		if (is_allowed_char(c)) {
+			(*wcs)[freep++] = c;
+			/* If filled up. */
+			if (((freep + 1) * sizeof(wchar_t)) > cap) {
+				cap *= 2;
+				*wcs = realloc(*wcs, cap);
+				if (*wcs == NULL)
+					die("Failed to reallocate memory for s", 2);
+			}
+
+			++len;
+			c = fgetwc(stream);
+		} else {
+			ungetwc(c, stream);
+			break;
+		}
+	}
+	(*wcs)[freep] = '\0';
+	*capp = cap;
+
+	if (c == WEOF) return (size_t) - 1;
 
 	return len;
 }
