@@ -179,7 +179,28 @@ static int handle_command(struct hashmap *import_hm, wchar_t **command_p,
 		struct import_item *ii;
 
 		ii = hashmap_get(import_hm, &(struct import_item){.short_name = name});
-		pdebug("ii is %ls , %ls", ii->short_name, ii->long_name);
+		pdebug("ii is %ls : %ls", ii->short_name, ii->long_name);
+
+	} else if (wcscmp(command, L"new") == 0) {
+		pdebug("new command detected!");
+
+		wchar_t *typename = NULL, *fullname = NULL;
+		size_t typename_cap = 0;
+		size_t typename_len = 0;
+
+		typename_len = read_block_wcs(&typename, &typename_cap, input);
+		if (typename_len == (size_t) - 1) return 1;
+
+		struct import_item *ii;
+
+		ii = hashmap_get(import_hm, &(struct import_item){.short_name = typename});
+		fullname = ii->long_name;
+
+		pdebug("got %ls from %ls", fullname, typename);
+
+		fprintf(output, "%ls_init", fullname);
+
+		free(typename);
 
 	} else {
 		pdebug("unknown command: %ls", command);
