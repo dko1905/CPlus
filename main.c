@@ -29,7 +29,7 @@ static uint64_t import_item_hash(const void *item, uint64_t seed0, uint64_t seed
 static bool import_item_free_iter(const void *item, void *udata);
 
 /* Globals */
-bool print_pdebug = true;
+bool print_pdebug = false;
 bool print_pinfo = true;
 bool print_pwarn = true;
 bool print_perr = true;
@@ -130,7 +130,7 @@ static int parse_and_print(FILE *input, FILE* output) {
 		}
 
 		/* Finally print. */
-		if (state <= 5)
+		if (state <= 5 || (state >= 20 && state <= 22))
 			fprintf(output, "%lc", c);
 	}
 
@@ -155,6 +155,7 @@ static int handle_command(struct hashmap *import_hm, wchar_t **command_p,
 	if (wcscmp(command, L"import") == 0) {
 		pdebug("import command detected!");
 
+		struct import_item *ii = NULL;
 		wchar_t *fullname = NULL, *name = NULL;
 		size_t fullname_cap = 0, name_cap = 0;
 		size_t fullname_len = 0, name_len = 0;
@@ -173,10 +174,13 @@ static int handle_command(struct hashmap *import_hm, wchar_t **command_p,
 
 		pdebug("    %ls : %ls", fullname, name);
 
+		ii = hashmap_get(import_hm, &(struct import_item){.short_name = name});
+		if (ii != NULL) {
+			pwarn("%ls has already been imported as %ls", fullname, ii->short_name);
+		}
+
 		hashmap_set(import_hm, &(struct import_item){.long_name = fullname, .short_name = name});
 		fprintf(output, "typedef %ls %ls;", fullname, name);
-
-		struct import_item *ii;
 
 		ii = hashmap_get(import_hm, &(struct import_item){.short_name = name});
 		pdebug("ii is %ls : %ls", ii->short_name, ii->long_name);
@@ -194,12 +198,45 @@ static int handle_command(struct hashmap *import_hm, wchar_t **command_p,
 		struct import_item *ii;
 
 		ii = hashmap_get(import_hm, &(struct import_item){.short_name = typename});
+		if (ii == NULL) {
+			pwarn("%ls is not defined", typename);
+			return 1;
+		}
 		fullname = ii->long_name;
 
 		pdebug("got %ls from %ls", fullname, typename);
 
 		fprintf(output, "%ls_init", fullname);
 
+		free(typename);
+
+	} else if (wcscmp(command, L"free") == 0) {
+		pdebug("free command detected!");
+
+		struct import_item *ii;
+		wchar_t *varname = NULL, *typename = NULL, *fullname = NULL;
+		size_t varname_cap = 0, typename_cap = 0;
+		size_t varname_len = 0, typename_len = 0;
+
+		varname_len = read_block_wcs(&varname, &varname_cap, input);
+		if (varname_len == (size_t) - 1) return 1;
+		typename_len = read_block_wcs(&typename, &typename_cap, input);
+		if (typename_len == (size_t) - 1) return 1;
+		typename_len = read_block_wcs(&typename, &typename_cap, input);
+		if (typename_len == (size_t) - 1) return 1;
+
+		ii = hashmap_get(import_hm, &(struct import_item){.short_name = typename});
+		if (ii == NULL) {
+			pwarn("%ls is not defined", typename);
+			return 1;
+		}
+		fullname = ii->long_name;
+
+		pdebug("varname: %ls    typename: %ls", varname, typename);
+
+		fprintf(output, "%ls_free(&%ls)", fullname, varname);
+
+		free(varname);
 		free(typename);
 
 	} else {
