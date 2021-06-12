@@ -86,10 +86,10 @@ struct hashmap *hashmap_new_with_allocator(
     _realloc = _realloc ? _realloc : realloc;
     _free = _free ? _free : free;
     int ncap = 16;
-    if (cap < ncap) {
+    if (cap < (size_t)ncap) {
         cap = ncap;
     } else {
-        while (ncap < cap) {
+        while ((size_t)ncap < cap) {
             ncap *= 2;
         }
         cap = ncap;
@@ -548,6 +548,7 @@ uint64_t hashmap_sip(const void *data, size_t len,
 uint64_t hashmap_murmur(const void *data, size_t len, 
                         uint64_t seed0, uint64_t seed1)
 {
+	(void)seed1;
     char out[16];
     MM86128(data, len, seed0, &out);
     return *(uint64_t*)out;
