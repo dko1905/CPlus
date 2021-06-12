@@ -9,7 +9,7 @@ int main(int argc, char *argv[]){
 
 	cat.meow(&cat);
 
-	@free cat;
+	@free cat as Cat;
 
 	return 0;
 }
