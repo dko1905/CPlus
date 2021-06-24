@@ -20,14 +20,7 @@ jobs:
           python-version: '3.x'
           architecture: 'x64'
 
-      - uses: actions/cache@v1
-        id: cache
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}
-
       - name: Install Python Dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
         run: pip install meson ninja
 
       - name: Prepare Build
