@@ -4,4 +4,4 @@
 
 noreturn void die(const char *restrict msg, int status);
 
-#endif /* DIE_H */
+#endif

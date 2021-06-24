@@ -1,2 +1,2 @@
-*.o
-cppp
+.cache/
+builddir/
