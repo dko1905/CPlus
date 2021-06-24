@@ -1,7 +1,8 @@
 /*-
  * SPDX-License-Identifier: MIT
+ *
  * Copyright (c) 2020 Joshua J Baker. All rights reserved.
-
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -26,7 +27,11 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stddef.h>
-#include "hashmap.h"
+#include <util/hashmap.h>
+#include <util/printer.h>
+
+_Pragma("GCC diagnostic push")
+_Pragma("GCC diagnostic ignored \"-Wimplicit-fallthrough\"")
 
 static void *(*_malloc)(size_t) = NULL;
 static void *(*_realloc)(void *, size_t) = NULL;
@@ -35,15 +40,15 @@ static void (*_free)(void *) = NULL;
 // hashmap_set_allocator allows for configuring a custom allocator for
 // all hashmap library operations. This function, if needed, should be called
 // only once at startup and a prior to calling hashmap_new().
-void hashmap_set_allocator(void *(*malloc)(size_t), void (*free)(void*)) 
+void hashmap_set_allocator(void *(*malloc)(size_t), void (*free)(void*))
 {
     _malloc = malloc;
     _free = free;
 }
 
 #define panic(_msg_) { \
-    fprintf(stderr, "panic: %s (%s:%d)\n", (_msg_), __FILE__, __LINE__); \
-    exit(1); \
+	perr("hashmap panic: %s", _msg_); \
+	exit(1); \
 }
 
 struct bucket {
@@ -359,7 +364,7 @@ void *hashmap_delete(struct hashmap *map, void *key) {
             }
             map->count--;
             if (map->nbuckets > map->cap && map->count <= map->shrinkat) {
-                // Ignore the return value. It's ok for the resize operation to
+                // ignore the return value. It's ok for the resize operation to
                 // fail to allocate enough memory because a shrink operation
                 // does not change the integrity of the data.
                 resize(map, map->nbuckets/2);
@@ -525,24 +530,39 @@ static void MM86128(const void *key, const int len, uint32_t seed, void *out) {
     uint32_t k4 = 0;
     switch(len & 15) {
     case 15: k4 ^= tail[14] << 16;
+		/* FALLTHROUGH */
     case 14: k4 ^= tail[13] << 8;
+		/* FALLTHROUGH */
     case 13: k4 ^= tail[12] << 0;
              k4 *= c4; k4  = ROTL32(k4,18); k4 *= c1; h4 ^= k4;
+		/* FALLTHROUGH */
     case 12: k3 ^= tail[11] << 24;
+		/* FALLTHROUGH */
     case 11: k3 ^= tail[10] << 16;
+		/* FALLTHROUGH */
     case 10: k3 ^= tail[ 9] << 8;
+		/* FALLTHROUGH */
     case  9: k3 ^= tail[ 8] << 0;
              k3 *= c3; k3  = ROTL32(k3,17); k3 *= c4; h3 ^= k3;
+		/* FALLTHROUGH */
     case  8: k2 ^= tail[ 7] << 24;
+		/* FALLTHROUGH */
     case  7: k2 ^= tail[ 6] << 16;
+		/* FALLTHROUGH */
     case  6: k2 ^= tail[ 5] << 8;
+		/* FALLTHROUGH */
     case  5: k2 ^= tail[ 4] << 0;
              k2 *= c2; k2  = ROTL32(k2,16); k2 *= c3; h2 ^= k2;
+		/* FALLTHROUGH */
     case  4: k1 ^= tail[ 3] << 24;
+		/* FALLTHROUGH */
     case  3: k1 ^= tail[ 2] << 16;
+		/* FALLTHROUGH */
     case  2: k1 ^= tail[ 1] << 8;
+		/* FALLTHROUGH */
     case  1: k1 ^= tail[ 0] << 0;
              k1 *= c1; k1  = ROTL32(k1,15); k1 *= c2; h1 ^= k1;
+			 break;
     };
     h1 ^= len; h2 ^= len; h3 ^= len; h4 ^= len;
     h1 += h2; h1 += h3; h1 += h4;
@@ -895,5 +915,6 @@ int main() {
 
 #endif
 
+_Pragma("GCC diagnostic pop")
 
 
