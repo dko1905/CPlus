@@ -24,7 +24,7 @@ jobs:
         run: pip install meson ninja
       
       - name: Prepare Build
-        run: meson setup builddir
+        run: meson setup build
       
       - name: Run Build
         run: meson compile -v -C build
