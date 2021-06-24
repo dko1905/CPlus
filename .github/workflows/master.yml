@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+          architecture: 'x64'
+      
+      - name: Install Python Dependencies
+        run: pip install meson ninja
+      
+      - name: Prepare Build
+        run: meson setup builddir
+      
+      - name: Run Build
+        run: meson compile -v -C build
+        
+      - name: Run Test Suite
+        run: meson test -v -C build
