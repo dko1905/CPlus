@@ -4,10 +4,10 @@ include config.mk
 
 OBJECTS = main.o
 
-all: options <program>
+all: options cppp
 
 options:
-	@echo <Program> build options:
+	@echo cppp build options:
 	@echo "CFLAGS  = $(MYCFLAGS)"
 	@echo "LDFLAGS = $(MYLDFLAGS)"
 	@echo "CC      = $(CC)"
@@ -15,19 +15,19 @@ options:
 .c.o:
 	$(CC) $(MYCFLAGS) -c $<
 
-<program>: $(OBJECTS)
-	$(CC) $(OBJECTS) -o <program> $(MYLDFLAGS)
+cppp: $(OBJECTS)
+	$(CC) $(OBJECTS) -o cppp $(MYLDFLAGS)
 
 # Remove binary and object files
 clean:
-	rm -f <program> $(OBJECTS)
+	rm -f cppp $(OBJECTS)
 
-# Install program
+# Install cppp
 install: all
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
-	cp -f <program> $(DESTDIR)$(PREFIX)/bin
-	chmod +x $(DESTDIR)$(PREFIX)/bin/<program>
+	cp -f cppp $(DESTDIR)$(PREFIX)/bin
+	chmod +x $(DESTDIR)$(PREFIX)/bin/cppp
 uninstall:
-	rm -f $(DESTDIR)$(PREFIX)/bin/<program>
+	rm -f $(DESTDIR)$(PREFIX)/bin/cppp
 
 .PHONY: all options clean install uninstall

@@ -1,0 +1,44 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROC_CWD	/home/daniel/Documents/CPlus/	//
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	//
+.c.o	Makefile	/^.c.o:$/;"	t
+C Template	README.md	/^# C Template$/;"	c
+CMD_IMPORT_STR	commands.h	/^#define CMD_IMPORT_STR /;"	d
+CMD_MAXLEN	commands.h	/^#define CMD_MAXLEN /;"	d
+COMMANDS_H	commands.h	/^#define COMMANDS_H$/;"	d
+INCS	config.mk	/^INCS = #`$(PKG_CONFIG) --cflags zlib`$/;"	m
+LIBS	config.mk	/^LIBS = #`$(PKG_CONFIG) --libs zlib`$/;"	m
+License	README.md	/^## License$/;"	s	chapter:C Template
+MAX	commands.h	/^#define MAX(/;"	d
+MYCFLAGS	config.mk	/^MYCFLAGS = -std=c99 -Wall -Wextra -pedantic \\$/;"	m
+MYCPPFLAGS	config.mk	/^MYCPPFLAGS = -DVERSION=\\"$(VERSION)\\" # My Preprocessor$/;"	m
+MYLDFLAGS	config.mk	/^MYLDFLAGS = $(LIBS) $(LDFLAGS) # My LD flags$/;"	m
+OBJECTS	Makefile	/^OBJECTS = main.o$/;"	m
+PKG_CONFIG	config.mk	/^PKG_CONFIG = pkg-config$/;"	m
+PREFIX	config.mk	/^PREFIX = \/usr\/local$/;"	m
+Todo	README.md	/^## Todo$/;"	s	chapter:C Template
+VERSION	config.mk	/^VERSION = 0.0.0$/;"	m
+VERSION	main.c	/^#define VERSION /;"	d	file:
+_GNU_SOURCE	main.c	/^#define _GNU_SOURCE /;"	d	file:
+all	Makefile	/^all: options cppp$/;"	t
+clean	Makefile	/^clean:$/;"	t
+cmd	main.c	/^	char cmd[CMD_MAXLEN];$/;"	m	struct:parse_run_command	typeref:typename:char[]	file:
+cmd_arg_count	main.c	/^	uint8_t cmd_arg_count;$/;"	m	struct:parse_run_command	typeref:typename:uint8_t	file:
+cppp	Makefile	/^cppp: $(OBJECTS)$/;"	t
+func	main.c	/^	parse_run_func_t func;$/;"	m	struct:parse_run_command	typeref:typename:parse_run_func_t	file:
+install	Makefile	/^install: all$/;"	t
+main	main.c	/^int main(int argc, char *argv[]) {$/;"	f	typeref:typename:int
+options	Makefile	/^options:$/;"	t
+parse_run	main.c	/^int parse_run($/;"	f	typeref:typename:int
+parse_run_command	main.c	/^struct parse_run_command {$/;"	s	file:
+parse_run_func_t	main.c	/^typedef int (*parse_run_func_t)(struct parse_run_command *command);$/;"	t	typeref:typename:int (*)(struct parse_run_command * command)	file:
+rec	main.c	/^void rec($/;"	f	typeref:typename:void
+uninstall	Makefile	/^uninstall:$/;"	t
