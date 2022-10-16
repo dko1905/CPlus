@@ -1,6 +1,8 @@
 # C+ preprocessor
 The **C+** preprocessor, currently being written.
 
+Dead projekt because of [Zig](https://ziglang.org/)
+
 ## License
 ![GPL3-or-later](https://www.gnu.org/graphics/gplv3-or-later.png) <br/>
 This program is free software: you can redistribute it and/or modify it under
